@@ -76,6 +76,22 @@ function ChatApplication({username}){
     ws.send(JSON.stringify(chatMessage));
     //setChatLog([...chatLog, {ChatMessage}])
     setMessage("");
+
+    const messageApi = {
+      onAddMessage: async (m) => {
+        await fetch("api/messages", {
+          method: "POST",
+          header: {
+            "content-type": "application/json"
+          },
+          body: JSON.stringify(m)
+        })
+      },
+      listMessages: async() => {
+        const res = await fetch("/api/messages");
+        return res.json()
+      }
+    }
   }
 
 
@@ -118,13 +134,32 @@ function MyProfile(){
 
 function Application(){
   const [username, setUsername] = useState();
+
+  /*const messageApi = {
+    onAddMessage: async (m) => {
+      await fetch("api/messages", {
+        method: "POST",
+        header: {
+          "content-type": "application/json"
+        },
+        body: JSON.stringify(m)
+      })
+    },
+    listMessages: async() => {
+      const res = await fetch("/api/messages");
+      return res.json()
+    }
+  }*/
+
+
 return(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<FrontPage/>}/>
          <Route path="/login" element={<Login onLogin={username => setUsername(username)}/>}/>
          <Route path="/chatscreen" element={<ChatApplication username={username}/>}/>
-         <Route path="profilePage" element={<MyProfile/>}/>
+         <Route path="/profilePage" element={<MyProfile/>}/>
+         
       </Routes>
     </BrowserRouter>
 )
@@ -139,4 +174,4 @@ return(
 }
 
 
-ReactDOM.render(<Application/>, document.getElementById("app"));  
+ReactDOM.render(<Application/>, document.getElementById("app"));   
