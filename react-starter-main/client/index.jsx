@@ -4,7 +4,7 @@ import {BrowserRouter, Route, Routes, Link, useNavigate} from "react-router-dom"
 
 function FrontPage(){
   return <div>
-    <h1>Welcome to MessangerChat! </h1>
+    <h1>Welcome to classic MSN-chat!! </h1>
 
     <Link to={"/logIn"}>Log Inn</Link>
     
@@ -80,7 +80,11 @@ function ChatApplication({username}){
 
 
   return( <div className={"application"}>
-  <header> Chat Application {username}</header>
+  <header> Chat Application {username + " ............."} 
+  
+  
+  <Link to="/profilePage">MY PROFILE</Link>
+  </header>
   <main>
     {chatLog.map((chat, index) => 
     <ChatMessage key={index} chat={chat}/> 
@@ -97,6 +101,21 @@ function ChatApplication({username}){
   )
 }
 
+function MyProfile(){
+  
+  return(
+    <div>
+  <p> PROFIL SIDEN ER IKKE SATT OPP ENDA</p>
+  <Link to={"/chatscreen"}>TRYKK HER FOR Å GÅ TILBAKE TIL CHATSCREEN</Link>
+
+</div>
+
+
+  )
+
+ 
+}
+
 function Application(){
   const [username, setUsername] = useState();
 return(
@@ -105,7 +124,7 @@ return(
         <Route path="/" element={<FrontPage/>}/>
          <Route path="/login" element={<Login onLogin={username => setUsername(username)}/>}/>
          <Route path="/chatscreen" element={<ChatApplication username={username}/>}/>
-         {/* <Route path=""/> */}
+         <Route path="profilePage" element={<MyProfile/>}/>
       </Routes>
     </BrowserRouter>
 )
