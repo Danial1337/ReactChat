@@ -6,13 +6,19 @@ const app = express();
 app.use(express.static("../client/dist"));
 
 const wsServer = new WebSocketServer({noServer: true})
+const sockets = [];
+
 wsServer.on("connect",(socket) => {
+  sockets.push(socket);
   console.log("ws Connected");
+  
   socket.send(JSON.stringify({author: "server", message: "Hello from soket"}));
-  socket.on("message",(message) => {
+  
+  socket.on("message",(data) => {
     const {author, message} = JSON.parse(data);
-    console.log({author,message})
-    socket.send(JSON.stringify({author,message}));
+    for (const receipient of sockets) {
+      receipient.send(JSON.stringify({author,message}));
+    }
   })
 })
 
