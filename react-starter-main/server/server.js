@@ -10,7 +10,7 @@ const wsServer = new WebSocketServer({noServer: true})
 const server = app.listen(process.env.PORT || 3000, () =>{
 console.log("Server started on " + server.address().port);
 server.on("upgrade", (req,socket, head) => {
-  wsServer.handleUpgrade(req, socket, header, () =>{});
+  wsServer.handleUpgrade(req, socket, head, () =>{});
 });
 
 });
