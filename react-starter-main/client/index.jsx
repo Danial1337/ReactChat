@@ -1,14 +1,30 @@
 import React, {useEffect, useState} from "react";
 import ReactDOM from "react-dom";
+import {BrowserRouter, Route, Routes, Link, useNavigate} from "react-router-dom";
 
+function FrontPage(){
+  return <div>
+    <h1>Welcome to MessangerChat! </h1>
+
+    <Link to={"/logIn"}>Log Inn</Link>
+    
+    
+  </div>
+}
 
 function Login({onLogin}){
+const navigate = useNavigate();
+
   const [username, setUsername] = useState("");
   function handleSubmit(event){
     event.preventDefault();
     onLogin(username)
-    
+
+   if(username){
+    navigate("/chatscreen")
+   }
   }
+
 
   return (
     <div>
@@ -20,6 +36,8 @@ function Login({onLogin}){
            onChange={(e) => setUsername(e.target.value)}/>
           </label>
           <button>Log in</button>
+ 
+
       </form>
     </div>
   )
@@ -38,7 +56,7 @@ function ChatApplication({username}){
  const [ws, setWs] = useState();
 
   useEffect(()=>{
-    const ws = new WebSocket(window.location.origin.replace(/^http/,  "ws"));
+    const ws = new WebSocket(window.location.origin.replace( /^http/,  "ws"));
     ws.onmessage = (event) =>{
       console.log(event.data)
       const {author, message } = JSON.parse(event.data);
@@ -81,12 +99,23 @@ function ChatApplication({username}){
 
 function Application(){
   const [username, setUsername] = useState();
+return(
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<FrontPage/>}/>
+         <Route path="/login" element={<Login onLogin={username => setUsername(username)}/>}/>
+         <Route path="/chatscreen" element={<ChatApplication username={username}/>}/>
+         {/* <Route path=""/> */}
+      </Routes>
+    </BrowserRouter>
+)
 
-  if(!username){
+  /*if(!username){
     return <Login onLogin={username => setUsername(username)}/>
   }
   
-  return <ChatApplication username={username}/>
+
+  return <ChatApplication username={username}/>*/
   
 }
 
