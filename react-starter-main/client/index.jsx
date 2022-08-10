@@ -38,7 +38,7 @@ function ChatApplication({username}){
  const [ws, setWs] = useState();
 
   useEffect(()=>{
-    const ws = new WebSocket("ws://localhost:3000");
+    const ws = new WebSocket("ws://" + window.location.host);
     ws.onmessage = (event) =>{
       console.log(event.data)
       const {author, message } = JSON.parse(event.data);

@@ -12,7 +12,7 @@ wsServer.on("connect",(socket) => {
   sockets.push(socket);
   console.log("ws Connected");
   
-  socket.send(JSON.stringify({author: "server", message: "Hello from soket"}));
+  socket.send(JSON.stringify({author: "server", message: "Automatisert melding: Hello from socket:3000,and welcome :D"}));
   
   socket.on("message",(data) => {
     const {author, message} = JSON.parse(data);
