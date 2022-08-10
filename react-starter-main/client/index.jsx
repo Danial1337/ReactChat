@@ -33,12 +33,17 @@ function ChatMessage({chat: {author, message}}){
     </div>
   )
 }
-
+ 
 function ChatApplication({username}){
  const [ws, setWs] = useState();
 
   useEffect(()=>{
     const ws = new WebSocket("ws://localhost:3000");
+    ws.onmessage = (event) =>{
+      console.log(event.data)
+      const {author, message } = JSON.parse(event.data);
+      setChatLog([...chatLog, {author, message}])
+    }
     setWs(ws);
   }, []);
 
@@ -72,7 +77,7 @@ const [message, setMessage] = useState("");
   <main>
     {chatLog.map((chat, index) => 
     <ChatMessage key={index} chat={chat}/> 
-    
+     
     )}
     </main>
   <footer> 
