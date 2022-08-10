@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import ReactDOM from "react-dom";
 
 
@@ -35,6 +35,15 @@ function ChatMessage({chat: {author, message}}){
 }
 
 function ChatApplication({username}){
+ const [ws, setWs] = useState();
+
+  useEffect(()=>{
+    const ws = new WebSocket("ws://localhost:3000");
+    setWs(ws);
+  }, []);
+
+
+
   const [chatLog, setChatLog] = useState([{
     author: "johannes",
     message: "Heisann!"
