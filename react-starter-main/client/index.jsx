@@ -2,8 +2,8 @@ import React, {useState} from "react";
 import ReactDOM from "react-dom";
 
 
-function Login(props){
-  const [username, setUsername] = useState();
+function Login(){
+  const [username, setUsername] = useState("");
   function handleSubmit(event){
     event.preventDefault()
   }
@@ -27,13 +27,13 @@ function Application(){
 
   if(!username){
     return <Login/>
-
-     //<Login/>
   }
+  
+  
 }
 
 
-return <div>Hello {username}</div>
+
 
 
 
