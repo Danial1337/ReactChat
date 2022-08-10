@@ -25,18 +25,50 @@ function Login({onLogin}){
   )
 }
 
+function ChatMessage({chat: {author, message}}){
+  return(
+    <div>
+      <strong> {author}: </strong>
+      {message}
+    </div>
+  )
+}
+
 function ChatApplication({username}){
+  const [chatLog, setChatLog] = useState([{
+    author: "johannes",
+    message: "Heisann!"
+},
+{
+  author: "Dani",
+  message: "Heisann!"
+},
+{
+  author: "petter",
+  message: "Heisann!"
+},
+])
+
+const [message, setMessage] = useState("");
+
   function handleNewMessage(event){
     event.preventDefault();
+    setChatLog([...chatLog, {author: username, message}])
+    setMessage("");
   }
 
 
   return( <div className={"application"}>
   <header> Chat Application {username}</header>
-  <main> Here is the main</main>
+  <main>
+    {chatLog.map((chat, index) => 
+    <ChatMessage key={index} chat={chat}/> 
+    
+    )}
+    </main>
   <footer> 
   <form onSubmit={handleNewMessage}> 
-          <input />
+          <input value={message} onChange={(e) => setMessage(e.target.value)} />
           <button>submit/send msg</button>
       </form>
   </footer>
