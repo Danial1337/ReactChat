@@ -3,6 +3,8 @@ import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 
 
+const allMsg = []
+
 export function ChatMessage({chat: {author, message}}){
   return(
     <div>
@@ -15,6 +17,7 @@ export function ChatMessage({chat: {author, message}}){
 
 export function ChatApplication({username}){
   const [ws, setWs] = useState();
+  
  
    useEffect(()=>{
      const ws = new WebSocket(window.location.origin.replace( /^http/,  "ws"));
@@ -22,10 +25,7 @@ export function ChatApplication({username}){
        console.log(event.data)
        const {author, message } = JSON.parse(event.data);
        setChatLog((oldState) =>[...oldState, {author, message}])
- 
        
-       
-     
      }
      setWs(ws);
    }, []);
@@ -35,14 +35,38 @@ export function ChatApplication({username}){
    const [chatLog, setChatLog] = useState([])
    const [message, setMessage] = useState("");
  
-   function handleNewMessage(event){
+   async function handleNewMessage(event){
+//TEST
+const moviesApi = { //innkaplse moviesApi, 
+  onAddMovie: async (m) => {
+    await fetch("/api/movies", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify(m)
+    })
+  },
+
+  listMovies: async () => {
+   const res = await fetch("/api/movies");
+  return res.json()
+  }
+} 
+
+//TESTSLUTT
      event.preventDefault();
      const chatMessage = {author: username, message};
+
      ws.send(JSON.stringify(chatMessage));
+     await moviesApi.onAddMovie({title: chatMessage.message,year: chatMessage.author});
      
      //setChatLog([...chatLog, {ChatMessage}])
      setMessage("");
- 
+
+
+ console.log(JSON.stringify(chatLog))
+// await moviesApi.onAddMovie({title: author, year: 9, plot: message})
      
    }
  
@@ -56,7 +80,6 @@ export function ChatApplication({username}){
    <main>
      {chatLog.map((chat, index) => 
      <ChatMessage key={index} chat={chat}/> 
-      
      )}
      </main>
    <footer> 

@@ -8,6 +8,24 @@ const app = express();
 app.use(cookieParser());
 app.use(bodyParser.json());
 
+const MESSAGES = []
+
+/* TESTER MOVIES GREIA*/
+
+app.get("/api/movies", (req,res) => { //håndter get-requester til /api/movies
+  res.json(MESSAGES)
+   })
+
+app.post("/api/movies",(req,res) => { //håndterer post-request, slik at verdier vi sender inn blir sendt fra server.
+ const {title, year } = req.body;
+ MESSAGES.push({title, year});
+ res.sendStatus(200);
+})   
+
+
+
+/* test SLUTT*/
+
 app.get("/login", (req,res) => {
 const {username} = req.cookies
 users.find(u => u.username === username);
@@ -16,24 +34,16 @@ const {fullname} = user;
 res.json({username, fullName})
 });
 
-const messages = [
-  {
-    author: "Danial",
-    message: "heisann, melding lagret i server :D"
-  }
-]
 
-const users = [
-  {
-    username: "admin", password: "12345", fullName: "TestingDanial"
-  }
-]
+
 
 app.post("/api/chatscreen", (req,res) => {
   const {author, message} = req.body;
   messages.push({author, message});
   res.sendStatus(200);
 })
+
+
 
 app.post("/login", (req, res) => {
   const {password, username} = req.body;

@@ -5,27 +5,32 @@ import {FrontPage} from './FrontPage'
 import { Login } from "./LoginPage";
 import {MyProfile} from "./ProfilePage"
 import {ChatApplication} from "./ChatPage"
-
+import { ListMovies } from "./ListMessages";
+import { moviesApi } from "../server/moviesApi";
 
 
 function Application(){
-  const [username, setUsername] = useState();
 
-  /*const messageApi = {
-    onAddMessage: async (m) => {
-      await fetch("api/messages", {
+  const moviesApi = { //innkaplse moviesApi, 
+    onAddMovie: async (m) => {
+      await fetch("/api/movies", {
         method: "POST",
-        header: {
+        headers: {
           "content-type": "application/json"
         },
         body: JSON.stringify(m)
       })
     },
-    listMessages: async() => {
-      const res = await fetch("/api/messages");
-      return res.json()
+
+    listMovies: async () => {
+     const res = await fetch("/api/movies");
+    return res.json()
     }
-  }*/
+  } 
+  
+
+  const [username, setUsername] = useState();
+
 
 
 return(
@@ -35,6 +40,7 @@ return(
          <Route path="/login" element={<Login onLogin={username => setUsername(username)}/>}/>
          <Route path="/chatscreen" element={<ChatApplication username={username} />}/>
          <Route path="/profilePage" element={<MyProfile/>}/>
+         <Route path="/listMessages" element={<ListMovies moviesApi={moviesApi}/>}/>
          
       </Routes>
     </BrowserRouter>
